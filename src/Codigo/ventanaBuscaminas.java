@@ -57,6 +57,7 @@ public class ventanaBuscaminas extends javax.swing.JFrame {
         }
         
         
+           
     }
     
     private void ponMinas(int numeroMinas){
@@ -87,7 +88,8 @@ public class ventanaBuscaminas extends javax.swing.JFrame {
                     }
                 }
                 
-                
+                 
+            
                
                 arrayBotones[i][j].setNumeroMinasAlrededor(minas);
                 
@@ -95,23 +97,28 @@ public class ventanaBuscaminas extends javax.swing.JFrame {
                 
                 if(arrayBotones[i][j].isEnabled()){
                     if(arrayBotones[i][j].getMina() == 0){
-                        arrayBotones[i][j].setText(String.valueOf(minas));         
+                        arrayBotones[i][j].setText(String.valueOf(minas)); 
+                        
                     }
                 }
-                minas = 0;
+                
                 
 //                if(arrayBotones[i][j].getMina() == 1 ){
 //                    arrayBotones[i][j].setText("");
 //                }
-                if(arrayBotones[i][j].getNumeroMinasAlrededor() == 0){
-                    arrayBotones[i][j].setEnabled(false);
+
+                
+                
+                arrayBotones[i][j].setNumeroMinasAlrededor(minas);
+                minas = 0;
+                if ((arrayBotones[i][j].getNumeroMinasAlrededor() < 0) && (arrayBotones[i][j].getMina() >= 0)){
+                    arrayBotones[i][j].setText(String.valueOf(arrayBotones[i][j].getNumeroMinasAlrededor()));
+                    
                 }
                 
             }
-        }
-        
-        
-        
+            
+        }  
     }
     
     /**
