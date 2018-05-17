@@ -52,14 +52,48 @@ public class ventanaBuscaminas extends javax.swing.JFrame {
 
     private void botonPulsado(MouseEvent e){
         Boton miBoton = (Boton) e.getComponent();
-        if (e.getButton() == MouseEvent.BUTTON3){
+        if (e.getButton() == MouseEvent.BUTTON3 && miBoton.isEnabled()){
             miBoton.setText("?");
         }
-        
+        if (e.getButton() == MouseEvent.BUTTON1 && miBoton.getText().equals("")) {
+            if (miBoton.getMina() == 1) {
+                miBoton.setText("M");
+            } else if (miBoton.getNumeroMinasAlrededor() == 0) {
+                miBoton.setFocusPainted(false);
+                elimina(miBoton);
+            } else {
+                miBoton.setText(String.valueOf(miBoton.getNumeroMinasAlrededor()));
+                miBoton.setEnabled(false);
+                miBoton.setFocusPainted(false);
+            }
+        }
         
            
     }
     
+    private void elimina(Boton boton) {
+
+        if (boton.getNumeroMinasAlrededor() == 0) {
+            boton.setEnabled(false);
+            for (int k = -1; k < 2; k++) {
+                for (int m = -1; m < 2; m++) {
+                    if ((boton.getI() + k >= 0) && (boton.getJ() + m >= 0) && (boton.getI() + k < filas) && (boton.getJ() + m < columnas)) {
+                        if (arrayBotones[boton.getI() + k][boton.getJ() + m].isEnabled()) {
+                            if (arrayBotones[boton.getI() + k][boton.getJ() + m].getNumeroMinasAlrededor() == 0) {
+                                arrayBotones[boton.getI() + k][boton.getJ() + m].setEnabled(false);
+                                elimina(arrayBotones[boton.getI() + k][boton.getJ() + m]);
+                            } else if (arrayBotones[boton.getI() + k][boton.getJ() + m].getNumeroMinasAlrededor() != 0) {
+                                arrayBotones[boton.getI() + k][boton.getJ() + m].setEnabled(false);
+                                arrayBotones[boton.getI() + k][boton.getJ() + m].
+                                        setText(String.valueOf(arrayBotones[boton.getI() + k][boton.getJ() + m].getNumeroMinasAlrededor()));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
     private void ponMinas(int numeroMinas){
         Random r = new Random();
         for(int i=0;i<numeroMinas;i++){
@@ -74,7 +108,7 @@ public class ventanaBuscaminas extends javax.swing.JFrame {
     }
     //cuenta minas es un metodo q para cada boton calcula el numero de minas que hay alrededor
     private void cuentaMinas(){
-        //TODO falta por hacert q pille las de los extremos 
+        
         int minas = 0;
         for (int  i=0; i<filas; i++){
             for(int j=0; j<columnas;j++){
@@ -95,20 +129,18 @@ public class ventanaBuscaminas extends javax.swing.JFrame {
                 
                 //TODO comentar la siguiente parte para que no aparezcan los numeros al iniciar la partida
                 
-                if(arrayBotones[i][j].isEnabled()){
-                    if(arrayBotones[i][j].getMina() == 0){
-                        arrayBotones[i][j].setText(String.valueOf(minas)); 
-                        
-                    }
-                }
-                
-                
-//                if(arrayBotones[i][j].getMina() == 1 ){
-//                    arrayBotones[i][j].setText("");
+//                if(arrayBotones[i][j].isEnabled()){
+//                    if(arrayBotones[i][j].getMina() == 0){
+//                        arrayBotones[i][j].setText(String.valueOf(minas)); 
+//                        
+//                    }
 //                }
-
+                //TODO lo de arriba es lo que hay que comentar
                 
-                
+                if(arrayBotones[i][j].getMina() == 1 ){
+                    arrayBotones[i][j].setText("");
+                }
+             
                 arrayBotones[i][j].setNumeroMinasAlrededor(minas);
                 minas = 0;
                 if ((arrayBotones[i][j].getNumeroMinasAlrededor() < 0) && (arrayBotones[i][j].getMina() >= 0)){
