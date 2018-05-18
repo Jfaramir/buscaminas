@@ -58,20 +58,41 @@ public class ventanaBuscaminas extends javax.swing.JFrame {
         if (e.getButton() == MouseEvent.BUTTON1 && miBoton.getText().equals("")) {
             if (miBoton.getMina() == 1) {
                 miBoton.setText("M");
+                
             } else if (miBoton.getNumeroMinasAlrededor() == 0) {
                 miBoton.setFocusPainted(false);
-                elimina(miBoton);
+                elimina0(miBoton);
             } else {
                 miBoton.setText(String.valueOf(miBoton.getNumeroMinasAlrededor()));
                 miBoton.setEnabled(false);
                 miBoton.setFocusPainted(false);
+            } 
+            
+            //
+            if(e.getButton() == MouseEvent.BUTTON1 && miBoton.getText().equals("M")){
+                for (int  i=0; i<filas; i++){
+                    for(int j=0; j<columnas;j++){
+                        arrayBotones[i][j].setNumeroMinasAlrededor(miBoton.getNumeroMinasAlrededor());
+                        for (int k = -1; k < 2; k++){
+                            for (int m= -1; m < 2; m++){
+                                if ((i+k >=0) && (j+m >= 0) && (i+k < filas) && (j+m < columnas)){
+                                    if(arrayBotones[i][j].getMina() == 1 ){
+                                        arrayBotones[i][j].setText("M");
+                                    }
+                                    arrayBotones[i+k][j+m].setEnabled(false);
+                                }
+                            }
+                        }
+                        
+                    }
+                }
             }
         }
-        
+        //
            
     }
     
-    private void elimina(Boton boton) {
+    private void elimina0(Boton boton) {
 
         if (boton.getNumeroMinasAlrededor() == 0) {
             boton.setEnabled(false);
@@ -81,11 +102,12 @@ public class ventanaBuscaminas extends javax.swing.JFrame {
                         if (arrayBotones[boton.getI() + k][boton.getJ() + m].isEnabled()) {
                             if (arrayBotones[boton.getI() + k][boton.getJ() + m].getNumeroMinasAlrededor() == 0) {
                                 arrayBotones[boton.getI() + k][boton.getJ() + m].setEnabled(false);
-                                elimina(arrayBotones[boton.getI() + k][boton.getJ() + m]);
-                            } else if (arrayBotones[boton.getI() + k][boton.getJ() + m].getNumeroMinasAlrededor() != 0) {
+                                elimina0(arrayBotones[boton.getI() + k][boton.getJ() + m]);
+                            } 
+                            else if (arrayBotones[boton.getI() + k][boton.getJ() + m].getNumeroMinasAlrededor() != 0) {
                                 arrayBotones[boton.getI() + k][boton.getJ() + m].setEnabled(false);
-                                arrayBotones[boton.getI() + k][boton.getJ() + m].
-                                        setText(String.valueOf(arrayBotones[boton.getI() + k][boton.getJ() + m].getNumeroMinasAlrededor()));
+                                arrayBotones[boton.getI() + k][boton.getJ() + m].setText(
+                                        String.valueOf(arrayBotones[boton.getI() + k][boton.getJ() + m].getNumeroMinasAlrededor()));
                             }
                         }
                     }
@@ -102,7 +124,7 @@ public class ventanaBuscaminas extends javax.swing.JFrame {
             //TODO hay q hacer una version q chequee si en las casillas seleccionadas
             //ya hay uan mina, pq en ese caso tiene que buscar otra
             arrayBotones[f][c].setMina(1);
-            arrayBotones[f][c].setText("m");
+            arrayBotones[f][c].setText("M");
             
         }
     }
@@ -112,8 +134,6 @@ public class ventanaBuscaminas extends javax.swing.JFrame {
         int minas = 0;
         for (int  i=0; i<filas; i++){
             for(int j=0; j<columnas;j++){
-                 
-                
                 for (int k = -1; k < 2; k++){
                     for (int m= -1; m < 2; m++){
                         if ((i+k >=0) && (j+m >= 0) && (i+k < filas) && (j+m < columnas)){
@@ -121,21 +141,17 @@ public class ventanaBuscaminas extends javax.swing.JFrame {
                         }
                     }
                 }
-                
-                 
-            
-               
                 arrayBotones[i][j].setNumeroMinasAlrededor(minas);
                 
-                //TODO comentar la siguiente parte para que no aparezcan los numeros al iniciar la partida
-                
-//                if(arrayBotones[i][j].isEnabled()){
-//                    if(arrayBotones[i][j].getMina() == 0){
-//                        arrayBotones[i][j].setText(String.valueOf(minas)); 
-//                        
-//                    }
-//                }
-                //TODO lo de arriba es lo que hay que comentar
+//                //TODO comentar la siguiente parte para que no aparezcan los numeros al iniciar la partida
+//                
+////                if(arrayBotones[i][j].isEnabled()){
+////                    if(arrayBotones[i][j].getMina() == 0){
+////                        arrayBotones[i][j].setText(String.valueOf(minas)); 
+////                        
+////                    }
+////                }
+//                //TODO lo de arriba es lo que hay que comentar
                 
                 if(arrayBotones[i][j].getMina() == 1 ){
                     arrayBotones[i][j].setText("");
